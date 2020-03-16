@@ -4,10 +4,10 @@ import {MaterialIcons} from '@expo/vector-icons'
 
 export default function Header(){
     return ( 
-        <ImageBackground source={require('../assets/download-1.jpg')} style={styles.header}>
+        <ImageBackground source={require('../assets/baseball-header.jpg')} style={styles.header}>
         <View style={styles.headerTitle}>
-                <Image style={styles.image}  source = {require('../assets/movie-icon.jpg')}/>
-            <Text style = {styles.headerText}>Mooooooovies</Text>
+                <Image style={styles.image}  source = {require('../assets/Babe-Ruth.jpg')}/>
+            <Text style = {styles.headerText}>Play Ball</Text>
     </View>
          </ImageBackground>
         )
@@ -16,9 +16,11 @@ export default function Header(){
 }
 const styles = StyleSheet.create ({
     header: {
-        backgroundColor: 'pink',
-        width: '100%',
-        height: '100%',
+        top: -20,
+        flex: 1,
+        width: '175%',
+        height: '140%',
+        resizeMode: 'cover',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
@@ -33,7 +35,9 @@ const styles = StyleSheet.create ({
         flexDirection: 'row'
     },
     image: {
-    height: 45,
+        top: 10,
+        left: 30,
+    height: 70,
     width: 55,
     marginHorizontal: 10
     }

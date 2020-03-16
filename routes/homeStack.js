@@ -1,11 +1,14 @@
 import {createStackNavigator} from 'react-navigation-stack'
 import {createAppContainer} from 'react-navigation'
 import Home from '../screens/home'
-import ReviewDetails from '../screens/reviewDetails'
+import ReviewDetails from '../screens/gameComponents/playerCard'
 import About from '../screens/about'
 import Header from '../shared/header'
 import React from 'react'
 import {StyleSheet} from 'react-native'
+import ClassicGame from '../screens/classicGame'
+import LeaderBoard from '../screens/leaderBoard'
+
 const screens = {
     Home: {
         screen: Home,
@@ -13,23 +16,23 @@ const screens = {
             headerTitle: ()=> < Header/>
         }
     },
-                            ReviewDetails: {
-                                screen: ReviewDetails,
-                                // navigationOptions: {
-                                //     title: 'Reviw Details',
-                                //     headerStyle: {backgroundColor: 'pink'}
-                                // }
-                            },
+    ClassicGame: {
+        screen: ClassicGame
+    },
     About: {
         screen: About
-    }
+    },
+    LeaderBoard: {
+        screen: LeaderBoard
+    },
+    
 }
 
 const HomeStack = createStackNavigator(screens,
      {
     defaultNavigationOptions: {
         headerTintColor: '#444',
-        headerStyle: {backgroundColor: 'pink'}
+        
     }
 }
 )
