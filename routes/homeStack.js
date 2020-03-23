@@ -1,7 +1,6 @@
 import {createStackNavigator} from 'react-navigation-stack'
 import {createAppContainer} from 'react-navigation'
 import Home from '../screens/home'
-import ReviewDetails from '../screens/gameComponents/playerCard'
 import About from '../screens/about'
 import Header from '../shared/header'
 import React from 'react'
