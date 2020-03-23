@@ -15,13 +15,14 @@ state = {
     elligiblePlayers: [],
     gameStart: false, 
     playCard: false,
-   cardPosition: new Animated.ValueXY({ x: 200, y: 100 }), 
+   cardPosition: new Animated.ValueXY({ x: 260, y: 100 }), 
    battleStart: false,
    computerCardInPlay: null,
    userCardInPlay: null, 
     userPointTotal: 0,
     computerPointTotal: 0, 
-    cardsInPlay: true
+    cardsInPlay: true,
+    replayCards: false
 
 }
 componentDidMount(){
@@ -100,7 +101,7 @@ calculateBattleScore(){
 //     }
 // }
 
-if(this.state.userCardInPlay.war > this.state.computerCardInPlay.war){
+if(parseInt(this.state.userCardInPlay.war) > parseInt(this.state.computerCardInPlay.war)){
     let scoreForUser = this.state.userCardInPlay.war - this.state.computerCardInPlay.war
     this.setState({userPointTotal: this.state.userPointTotal + scoreForUser})
 }
@@ -111,13 +112,47 @@ else{
 }
 }
 
-resetBoard=()=>{
-    setTimeout(() => [this.setState({ cardsInPlay: false }), this.setUserCardInPlay(), this.setComputerCardInPLay()], 1000),
+clearBoard=()=>{
+    setTimeout(() => [this.setState({ cardsInPlay: false }), this.setUserCardInPlay(), this.setComputerCardInPLay()], 1500),
     // ()=>this.setState({cardsInPlay: true}), 
     ()=>console.log("cards in play?",this.state.cardsInPlay)
 }
 
+resetUserCardPosition=()=>{
+    setTimeout(() => this.setState({
+        cardPosition: new Animated.ValueXY({ x: 260, y: 100 }), 
+        replayCards: true, 
+        battleStart: false
+}), 1500)
+}
+    renderComputerCard = () => {
+        return (
+            <ComputerCard
+            cardsInPlay={this.state.cardsInPlay}
+                computerCardInPlayName={this.state.computerCardInPlay.name}
+                computerCardInPlayImage={this.state.computerCardInPlay.image}
+                computerCardInPlayWar={this.state.computerCardInPlay.war}
+                key={this.state.computerCardInPlay.war}
+            />
+        )
+    }
 
+    renderUserCard = () => {
+        return (
+            <Animated.View style={this.state.cardPosition.getLayout()}
+            >
+                <UserCard
+                    cardsInPlay={this.state.cardsInPlay}
+                    battleStart={this.state.battleStart}
+                    playCard={this.state.battleStart}
+                    userCardInPlayName={this.state.userCardInPlay.name}
+                    userCardInPlayImage={this.state.userCardInPlay.image}
+                    userCardInPlayWar={this.state.userCardInPlay.war}
+                    key={this.state.userCardInPlay.war}
+                />
+            </Animated.View>
+        )
+    }
 render(){    
     
     const cardSlide = () => {
@@ -128,14 +163,18 @@ render(){
 
           ()=> [this.setState({battleStart: true}),
              this.calculateBattleScore(), 
-                this.resetBoard(), this.setState({cardsInPlay: true})
-            //  this.setState({cardsInPlay: false})
+                this.clearBoard(
+                //     () => 
+                // this.forceUpdate()
+                )
+                , 
+             this.resetUserCardPosition(),
             ]
           
         )
     }
 
-
+    
 return(
 
 
@@ -163,27 +202,19 @@ return(
      computerScore = {this.state.computerPointTotal}
      />
     {this.state.cardsInPlay? 
-        <ComputerCard
-        // cardsInPlay={this.state.cardsInPlay}
-        computerCardInPlayName={this.state.computerCardInPlay.name}
-        computerCardInPlayImage={this.state.computerCardInPlay.image}
-        computerCardInPlayWar={this.state.computerCardInPlay.war}
-        />
+       this.renderComputerCard() 
+       :
+       this.state.replayCards ? 
+       this.renderComputerCard()
+       
 : 
 null
     }
     {this.state.cardsInPlay ?
-            <Animated.View style={this.state.cardPosition.getLayout()}
->
-        <UserCard
-        cardsInPlay={this.state.cardsInPlay}
-        battleStart={this.state.battleStart}
-        playCard = {this.state.battleStart}
-                    userCardInPlayName={this.state.userCardInPlay.name}
-                    userCardInPlayImage={this.state.userCardInPlay.image}
-                    userCardInPlayWar={this.state.userCardInPlay.war}
-        />
-        </Animated.View>
+            this.renderUserCard()
+        :
+        this.state.replayCards ? 
+        this.renderUserCard()
         :
         null}
 

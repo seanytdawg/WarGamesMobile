@@ -18,17 +18,17 @@ class PlayerCard extends Component{
 
 
     componentWillMount(){
-        this.animatedValue = new Animated.Value(0)
+        // this.animatedValue = new Animated.Value(0)
 
-        this.frontInterpolate = this.animatedValue.interpolate({
-            inputRange: [0, 180],
-            outputRange: ['0deg', '180deg']
-        })
+        // this.frontInterpolate = this.animatedValue.interpolate({
+        //     inputRange: [0, 180],
+        //     outputRange: ['0deg', '180deg']
+        // })
 
-        this.backInterpolate = this.animatedValue.interpolate({
-            inputRange: [0, 180],
-            outputRange: ['180deg', '360deg']
-        })
+        // this.backInterpolate = this.animatedValue.interpolate({
+        //     inputRange: [0, 180],
+        //     outputRange: ['180deg', '360deg']
+        // })
         // let animatedValue = new Animated.Value(0)
         // fontInterpolate = animatedValue.interpolate({
         //     inputRange: [0, 180],
@@ -52,19 +52,21 @@ class PlayerCard extends Component{
     componentDidMount(){
         this.cardSlide()
     }
+
+    
     render(){
-        const frontAnimatedStyle = {
-            transform: [
-                {rotateY: this.frontInterpolate }
-            ]
+        // const frontAnimatedStyle = {
+        //     transform: [
+        //         {rotateY: this.frontInterpolate }
+        //     ]
     
-        }
+        // }
     
-        const backAnimatedStyle = {
-            transform: [
-                {rotateY: this.backInterpolate}
-            ]
-        }
+        // const backAnimatedStyle = {
+        //     transform: [
+        //         {rotateY: this.backInterpolate}
+        //     ]
+        // }
 
     const styles = StyleSheet.create({
         computerCard: {
