@@ -16,6 +16,7 @@ const screens = {
         }
     },
     ClassicGame: {
+        
         screen: ClassicGame
     },
     About: {

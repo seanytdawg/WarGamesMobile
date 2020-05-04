@@ -1,4 +1,4 @@
-import {Text, View, Animated, ImageBackground, Button} from 'react-native'
+import {Text, View, Animated, ImageBackground, Button, StyleSheet, Image} from 'react-native'
 import React, {Component} from 'react'
 import PlayerCard from "./gameComponents/userPlayerCard"
 import UserDeck from "./gameComponents/userDeck"
@@ -6,6 +6,8 @@ import ComputerDeck from "./gameComponents/computerDeck"
 import ComputerCard from './gameComponents/computerPlayerCard'
 import UserCard from './gameComponents/userPlayerCard'
 import Scoreboard from './gameComponents/scoreboard'
+
+
 export default class ClassicGame extends Component {
 
 state = {
@@ -15,7 +17,7 @@ state = {
     elligiblePlayers: [],
     gameStart: false, 
     playCard: false,
-   cardPosition: new Animated.ValueXY({ x: 260, y: 100 }), 
+   cardPosition: new Animated.ValueXY({ x: 260, y: -90 }), 
    battleStart: false,
    computerCardInPlay: null,
    userCardInPlay: null, 
@@ -101,6 +103,7 @@ calculateBattleScore(){
 //     }
 // }
 
+
 if(parseInt(this.state.userCardInPlay.war) > parseInt(this.state.computerCardInPlay.war)){
     let scoreForUser = this.state.userCardInPlay.war - this.state.computerCardInPlay.war
     this.setState({userPointTotal: this.state.userPointTotal + scoreForUser})
@@ -110,22 +113,34 @@ else{
     this.setState({ computerPointTotal: this.state.computerPointTotal + scoreForComputer })
 // console.log(scoreForComputer)
 }
+
+
+}
+
+setGameOver=()=>{
+    this.state.computerPointTotal >= 100 || this.state.userPointTotal >= 100 ?
+        this.setState({ gameStart: false, gameOver: true })
+        :
+        null
 }
 
 clearBoard=()=>{
-    setTimeout(() => [this.setState({ cardsInPlay: false }), this.setUserCardInPlay(), this.setComputerCardInPLay()], 1500),
+    
+    setTimeout(() => [this.setState({ cardsInPlay: false }), this.setUserCardInPlay(), this.setComputerCardInPLay(), this.setGameOver()], 1500)
     // ()=>this.setState({cardsInPlay: true}), 
-    ()=>console.log("cards in play?",this.state.cardsInPlay)
+       
 }
 
 resetUserCardPosition=()=>{
     setTimeout(() => this.setState({
-        cardPosition: new Animated.ValueXY({ x: 260, y: 100 }), 
+        cardPosition: new Animated.ValueXY({ x: 260, y: -90 }), 
         replayCards: true, 
         battleStart: false
 }), 1500)
 }
     renderComputerCard = () => {
+
+
         return (
             <ComputerCard
             cardsInPlay={this.state.cardsInPlay}
@@ -153,11 +168,36 @@ resetUserCardPosition=()=>{
             </Animated.View>
         )
     }
+     gameOver=()=>{
+         let userScore = Math.round(this.state.userPointTotal)
+         let computerScore = Math.round(this.state.computerPointTotal)
+// this.state.computerPointTotal >= 100 || this.state.userPointTotal >= 100
+return (
+    <View>
+        <Text>Game Over!</Text>
+<Text>You {this.state.userPointTotal >= 100 ? "Win!" : "Lose!"}</Text>
+<Text>You: {userScore}</Text>
+<Text>Cpu: {computerScore}</Text>
+{this.state.userPointTotal >= 100 ?
+<View>
+    <Image source={require('../assets/kirk-celebration.jpg')}/>
+</View>
+ 
+:
+<View>
+     <Image source={require('../assets/braca-sad.jpg')}/>
+</View>
+
+}
+<Button title="play again" onPress={()=>this.setState({gameStart: true})}/>
+    </View>
+    )
+     }
 render(){    
     
     const cardSlide = () => {
         Animated.timing(this.state.cardPosition, {
-            toValue: { x: 150, y: -50 },
+            toValue: { x: 150, y: -250 },
             duration: 2000
         }).start(
 
@@ -181,13 +221,17 @@ return(
     this.state.gameStart? 
 
     
-        // <ImageBackground source={require('../assets/baseball-stadium.jpg')}>
+        <ImageBackground source={require('../assets/baseball-stadium.jpg')} style={styles.imageBackground}>
 
     <Animated.View>
+{/*         
+            <Animated.Image source={require('../assets/vis-sign.png')} style={styles.visitorSign} />
+            < Animated.Image source={require('../assets/home-sign.png')} style={styles.homeSign} />  */}
     <ComputerDeck/>
     <UserDeck />
      <View style={[{ left: -120, top: 220 }]}>
     <Button
+    style={styles.playCardButton}
     title="Play Card"
     onPress={()=>
         // console.log("hi")
@@ -200,7 +244,9 @@ return(
      <Scoreboard
      userScore = {this.state.userPointTotal}
      computerScore = {this.state.computerPointTotal}
+
      />
+        
     {this.state.cardsInPlay? 
        this.renderComputerCard() 
        :
@@ -218,32 +264,53 @@ null
         :
         null}
 
-    </Animated.View>
+        </Animated.View>
 
-    :
+    </ImageBackground>
+            :
+            this.state.gameOver ? 
+            this.gameOver()
+            :
         <Button
             title="Start Game"
             type="outline"
             onPress={()=>this.setState({gameStart: true})}
         />
 
-    // </ImageBackground>
 )
 }
 
 }
 
 
-const styles = {
+const styles = StyleSheet.create({
 
+    homeSign: {
+        top: -300,
+        left: 200,
+        zIndex: 30,
+        height: 100,
+        width: 100
+    },
+    visitorSign: {
+        top: -300,
+        left: 200,
+        zIndex: 30,
+        height: 10,
+        width: 10
+    },
     playCardButton: {
         height: 100,
-        left: -100, 
-        top: 300
+        left: 100, 
+        top: 100,
+        backgroundColor: 'white'
     },
     deck: {
         flex: .5,
         height: 10,
         width: 10
+    },
+    imageBackground: {
+        flex: 1
     }
-}
+})

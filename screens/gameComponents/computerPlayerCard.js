@@ -12,7 +12,7 @@ class PlayerCard extends Component{
     
   state = {
 
-      cardPosition: new Animated.ValueXY({ x: 15, y: -280 }),
+      cardPosition: new Animated.ValueXY({ x: 10, y: -520 }),
       isFlipped: false
   }
 
@@ -43,8 +43,8 @@ class PlayerCard extends Component{
     }
      cardSlide = () => {
         Animated.timing(this.state.cardPosition, {
-            toValue: { x: 100, y: -150 },
-            duration: 2000
+            toValue: { x: 50, y: -310 },
+            duration: 1500
         }).start(
            ()=> this.setState({ isFlipped: true })
         )
@@ -53,7 +53,7 @@ class PlayerCard extends Component{
         this.cardSlide()
     }
 
-    
+
     render(){
         // const frontAnimatedStyle = {
         //     transform: [
